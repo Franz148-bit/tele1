@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universidad Nacional de Educación Enrique Guzmán y Valle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3B82F6;
+            --primary-dark: #1E3A8A;
+            --primary-light: #EFF6FF;
+            --secondary: #166088;
+            --accent: #4fc3f7;
+            --dark: #343a40;
+            --light: #f8fafc;
+            --gray: #e2e8f0;
+            --dark-gray: #6b7280;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --bg-gradient: linear-gradient(to bottom right, #f8fafc 0%, #e9ecef 100%);
+            --section-padding: 4rem 0;
+            --content-spacing: 2rem;
+            --border-radius: 8px;
+            --max-width: 1200px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        
+        /* Presentación inicial */
+        .presentacion {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            z-index: 1000;
+            animation: fadeOut 1.5s 3s forwards;
+        }
+        
+        .presentacion img {
+            width: 80%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9);
+            opacity: 0;
+            animation: zoomIn 1s 0.5s forwards;
+        }
+        
+        .presentacion h1 {
+            margin-top: 40px;
+            color: white;
+            font-size: 2.8rem;
+            text-align: center;
+            opacity: 0;
+            animation: fadeInDown 1s 1s forwards;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .presentacion p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 20px;
+            font-size: 1.2rem;
+            max-width: 600px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s 1.5s forwards;
+        }
+        
+        .loading-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            margin-top: 40px;
+            border-radius: 2px;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 0.5s 2s forwards;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: white;
+            animation: loading 1.5s 2s forwards;
+        }
+        
+        /* Contenido principal */
+        .main-container {
+            opacity: 0;
+            animation: fadeIn 1s 3.5s forwards;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 3rem;
+            clip-path: ellipse(100% 100% at 50% 0%);
+        }
+        
+        .header-content {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            object-fit: cover;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+        
+        .profile-image:hover {
+            transform: scale(1.05);
+            border-color: white;
+        }
+        
+        header h1 {
+            margin: 1.5rem 0 0.8rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Tabs */
+        .tabs-container {
+            margin-bottom: 3rem;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: var(--transition);
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 1.05rem;
+            position: relative;
+            background: transparent;
+            border: none;
+        }
+        
+        .tab:hover {
+            color: var(--primary-dark);
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .tab.active {
+            color: white;
+            background: var(--primary);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Estilos para el contenido */
+        .content-section {
+            margin-bottom: 4rem;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 0 1rem;
+        }
+        
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 2.2rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+            display: inline-block;
+            font-weight: 700;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 1.15rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+        
+        /* Grid de contenido */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        /* Items de contenido */
+        .content-item {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .content-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .content-item:hover::before {
+            width: 6px;
+            background: var(--accent);
+        }
+        
+        .content-image-container {
+            height: 200px;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .content-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .content-item:hover .content-image {
+            transform: scale(1.05);
+        }
+        
+        .item-number {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+        }
+        
+        .item-title {
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        
+        .item-text {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+        
+        .news-reference {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray);
+        }
+        
+        .news-reference a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            transition: color 0.2s ease;
+        }
+        
+        .news-reference a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+        
+        .news-reference i {
+            margin-right: 8px;
+            color: var(--accent);
+        }
+        
+        /* Lista de características */
+        .features-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+        
+        .feature-item {
+            flex: 1;
+            min-width: 250px;
+            max-width: 350px;
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .feature-item:hover::after {
+            height: 6px;
+            background: var(--accent);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-title {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .feature-text {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            clip-path: ellipse(100% 100% at 50% 100%);
+        }
+        
+        .team-members {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .team-member {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem 1.8rem;
+            border-radius: 50px;
+            transition: var(--transition);
+            font-size: 1.05rem;
+        }
+        
+        .team-member:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .team-member i {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .footer-text {
+            opacity: 0.8;
+            font-size: 0.95rem;
+            margin-top: 1.5rem;
+        }
+        
+        /* Animaciones */
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        
+        @keyframes loading {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+        
+        /* Responsivo */
+        @media (max-width: 992px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .features-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .feature-item {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .tabs {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+                scrollbar-width: none;
+            }
+            
+            .tabs::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .tab {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.95rem;
+                flex-shrink: 0;
+            }
+            
+            .presentacion h1 {
+                font-size: 2.2rem;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.05rem;
+            }
+            
+            .team-members {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .content-image-container {
+                height: 180px;
+            }
+            
+            .content-item {
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .presentacion h1 {
+                font-size: 1.8rem;
+            }
+            
+            .presentacion p {
+                font-size: 1rem;
+            }
+            
+            .loading-bar {
+                width: 250px;
+            }
+            
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .tagline {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .tab {
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .content-image-container {
+                height: 160px;
+            }
+            
+            .item-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Presentación inicial -->
+    <div class="presentacion">
+        <img src="https://scontent.flim23-1.fna.fbcdn.net/v/t39.30808-6/505913316_1102010868614896_4009721654965201990_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=QQ6hL7dFf_UQ7kNvwELRuvL&_nc_oc=Adn41mUxAhuRM-lBpnvbmB5nd3z3elB-wINYrIVxvBy36lUekPlEy_S-7A1_OuNiN69sLvy8My9sxQSo-K46gigU&_nc_zt=23&_nc_ht=scontent.flim23-1.fna&_nc_gid=fT89wGSyNotmy6Jbo1rjag&oh=00_AfR9qqTLzHh4isFNlcUMo5_l7hbgeyNKc5O8QL1yg17jlQ&oe=68750472" alt="Presentación">
+        <h1>Universidad Nacional de Educación Enrique Guzmán y Valle</h1>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+    
+    <!-- Contenido principal -->
+    <div class="main-container">
+        <header>
+            <div class="header-content">
+                <div class="profile-container">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Escudo_UNE.png" alt="Perfil del equipo" class="profile-image">
+                    <h1>Universidad Nacional de Educación Enrique Guzmán y Valle</h1>
+                    <p class="tagline">Alma Máter del Magisterio Nacional</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="tabs-container">
+            <div class="tabs">
+                <div class="tab active" data-tab="inicio">Inicio</div>
+                <div class="tab" data-tab="avances">Historia</div>
+                <div class="tab" data-tab="potencial">Noticias</div>
+                <div class="tab" data-tab="desafios">Carreras</div>
+                <div class="tab" data-tab="oportunidades">Facultad de Tecnología (FATEC)</div>
+                <div class="tab" data-tab="proposito">Propósito</div>
+                <div class="tab" data-tab="campo">Campo Laboral</div>
+                <div class="tab" data-tab="conexion">Conexión con el Entorno</div>
+            </div>
+
+            <!-- Contenido de las pestañas -->
+            <div class="tab-content active" id="inicio">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Enrique Guzmán y Valle</h2>
+                        <p class="section-subtitle">La Universidad Nacional de Educación Enrique Guzmán y Valle, afectuosamente llamada La Cantuta, se presenta como una entidad con una trayectoria y prestigio inigualables en el Perú.</p>
+                    </div>
+                    
+                    <div class="features-container">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <h3 class="feature-title">Alma Máter del Magisterio</h3>
+                            <p class="feature-text">Su fama supera límites debido a su compromiso en la capacitación de profesionales, no solo en educación, sino también en áreas variadas.</p>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h3 class="feature-title">Amplia Oferta Académica</h3>
+                            <p class="feature-text">Administración de Empresas, Negocios Internacionales, Gastronomía, Hotelería y Turismo, y Nutrición Humana.</p>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            <h3 class="feature-title">Proyecto Innovador</h3>
+                            <p class="feature-text">Alumnos de Telecomunicaciones e Informática han creado una página web como parte del curso de Software de Telecomunicaciones.</p>
+                        </div>
+                        
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <h3 class="feature-title">Visión Digital</h3>
+                            <p class="feature-text">Funcionar como un centro de información accesible y ágil sobre la universidad, con una visión novedosa y accesible.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-item" style="max-width: 800px; margin: 0 auto;">
+                        <p class="item-text">La Universidad Nacional de Educación Enrique Guzmán y Valle, afectuosamente llamada La Cantuta, se presenta como una entidad con una trayectoria y prestigio inigualables en el Perú. Alma Máter del Magisterio Nacional, su fama supera límites debido a su compromiso en la capacitación de profesionales, no solo en educación, sino también en áreas variadas como Administración de Empresas, Negocios Internacionales, Gastronomía, Hotelería y Turismo, y Nutrición Humana.</p>
+                        
+                        <p class="item-text">Como elemento esencial de la capacitación práctica y la implementación de saberes teóricos, los alumnos de la licenciatura de Telecomunicaciones e informática de la Universidad Nacional de Educación Enrique Guzmán y Valle han creado una original página web. Este proyecto, diseñado dentro del contexto del curso de Software de Telecomunicaciones, no solo pone de manifiesto sus destrezas técnicas y de programación, sino que también desempeña una función clave en la divulgación y fomento de la institución misma.</p>
+                        
+                        <p class="item-text">El sitio web, tiene como meta principal funcionar como un centro de información accesible y ágil sobre la universidad. Además de reproducir el contenido oficial, intenta proporcionar una visión novedosa y accesible. Esta propuesta estudiantil no solo mejora la presencia digital de La Cantuta, sino que también brinda a los alumnos de Telecomunicaciones una enriquecedora experiencia práctica en la creación de software aplicado, capacitándolos para enfrentar los retos del mercado laboral en un sector en continua transformación.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="avances">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Historia</h2>
+                        <p class="section-subtitle">La trayectoria de la Universidad Nacional de Educación Enrique Guzmán y Valle</p>
+                    </div>
+                    
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://cdn.goconqr.com/uploads/flash_card/image_question/4558757/desktop_8f65019b-bf8c-4f90-84f3-fe75fe429b76.jpg" alt="Primera escuela" class="content-image">
+                            </div>
+                            <h3 class="item-title">Primera escuela</h3>
+                            <p class="item-text">La Universidad Nacional de Educación Enrique Guzmán y Valle, más conocida como La Cantuta, tiene una trayectoria que se remonta al 6 de julio de 1822, fecha en que el libertador José de San Martín fundó la Primera Escuela Normal Central de Varones, un evento que hoy celebramos como el Día del Maestro. A lo largo de los años, esta institución fundamental para la educación peruana ha pasado por diversas transformaciones y cambios de nombre, adaptándose a las necesidades del país. En 1929, se estableció como el Instituto Pedagógico Nacional de Varones, ampliando su enfoque a la formación de maestros de secundaria.</p>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.une.edu.pe/tecnologia/wp-content/uploads/2019/02/antiguas-1024x621.jpg" alt="La Universidad" class="content-image">
+                            </div>
+                            <h3 class="item-title">La Universidad</h3>
+                            <p class="item-text">Luego, entre 1952 y 1953, con el apoyo de Estados Unidos, se construyeron sus modernas instalaciones en Chosica, que fueron inauguradas el 6 de julio de 1953 como la sede de la Escuela Normal Central. Posteriormente, en 1955, fue rebautizada como Escuela Normal Superior Enrique Guzmán y Valle, en honor a su primer director peruano. Finalmente, en un hito crucial para su desarrollo, la Ley 15519 la reconoció como Universidad Nacional de Educación en 1965, otorgándole el estatus universitario que mantiene hasta el día de hoy.</p>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.une.edu.pe/uneweb/wp-content/uploads/2020/09/1d5abdbb-f9e7-484e-8355-13eebedf740f-1184x600.jpg" alt="La Actualidad" class="content-image">
+                            </div>
+                            <h3 class="item-title">La Actualidad</h3>
+                            <p class="item-text">Desde entonces, La Cantuta ha consolidado su rol como un referente en la formación de docentes y otros profesionales, expandiendo su oferta académica a diversas facultades y carreras. En 2019, obtuvo su licenciamiento institucional por la SUNEDU, un reconocimiento a su cumplimiento de las condiciones básicas de calidad, y actualmente se enfoca en la acreditación de sus programas de estudio y su internacionalización.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="potencial">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Noticias</h2>
+                        <p class="section-subtitle">Eventos y acontecimientos recientes en la Universidad Nacional de Educación Enrique Guzmán y Valle</p>
+                    </div>
+                    
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.une.edu.pe/uneweb/wp-content/uploads/2025/07/IMG_5694-1200x600.jpg" alt="UNE firma acuerdo con universidad mexicana" class="content-image">
+                            </div>
+                            <h3 class="item-title">UNE firma acuerdo con universidad mexicana para cooperación académica</h3>
+                            <p class="item-text">La Universidad Nacional de Educación Enrique Guzmán y Valle (UNE) de Perú y la Universidad Autónoma de Tlaxcala (UATx) de México han firmado un Memorándum de Entendimiento (MoU) el 11 de julio de 2025. Este acuerdo tiene como objetivo principal fortalecer la internacionalización académica y promover proyectos, programas y actividades conjuntas en el ámbito educativo, científico y cultural.</p>
+                            <p class="item-text">Los rectores de ambas instituciones, la Dra. Lida Asencios Trujillo de la UNE y el Dr. Serafín Ortiz Ortiz de la UATx, presidieron la firma y destacaron la importancia de esta colaboración estratégica. Los puntos clave del acuerdo incluyen el intercambio de estudiantes, docentes y personal administrativo, la realización de investigaciones colaborativas, el desarrollo de programas académicos compartidos y la organización de eventos como foros y simposios.</p>
+                            <div class="news-reference">
+                                <a href="https://www.une.edu.pe/uneweb/une-firma-acuerdo-con-universidad-mexicana-para-cooperacion-academica/" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Leer noticia completa
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.une.edu.pe/uneweb/wp-content/uploads/2025/03/20250324_105345-1200x600.jpg" alt="UNE lanza proyecto de sostenibilidad hídrica" class="content-image">
+                            </div>
+                            <h3 class="item-title">UNE lanza innovador proyecto de cooperación para la sostenibilidad hídrica</h3>
+                            <p class="item-text">La UNE ha dado un paso trascendental en investigación y gestión de recursos hídricos con el proyecto "Puentes de Agua: Soluciones colaborativas para la sostenibilidad hídrica entre Perú y Utah". Esta iniciativa de cooperación internacional, en colaboración con la Universidad del Valle de Utah (UVU) de Estados Unidos y otras universidades y municipios peruanos, busca desarrollar investigación conjunta sobre la contaminación del agua y generar soluciones sostenibles.</p>
+                            <div class="news-reference">
+                                <a href="https://www.une.edu.pe/uneweb/une-lanza-innovador-proyecto-de-cooperacion-internacional-para-la-sostenibilidad-hidrica/" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Leer noticia completa
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.une.edu.pe/uneweb/wp-content/uploads/2025/06/IMG_0890-1200x600.jpg" alt="UNE y Minedu suscriben convenio" class="content-image">
+                            </div>
+                            <h3 class="item-title">UNE y Minedu suscriben importante convenio para fortalecer la formación docente en el país</h3>
+                            <p class="item-text">La Universidad Nacional de Educación Enrique Guzmán y Valle (UNE) y el Ministerio de Educación (Minedu) han firmado un importante convenio para fortalecer la formación docente en Perú. Este acuerdo tiene como objetivo principal mejorar la calidad del servicio educativo a través de la implementación del Programa de Inducción Docente 2025.</p>
+                            <p class="item-text">El programa beneficiará a más de 6,000 docentes recién incorporados a la Carrera Pública Magisterial y forma parte de una estrategia nacional con una inversión de 24 millones de soles, impactando a más de 10,000 docentes en todo el país. La UNE, junto con otras universidades como la Universidad Nacional Mayor de San Marcos, ha suscrito este tipo de convenio.</p>
+                            <div class="news-reference">
+                                <a href="https://www.une.edu.pe/uneweb/une-y-minedu-suscriben-importante-convenio-para-fortalecer-la-formacion-docente-en-el-pais/" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Leer noticia completa
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.une.edu.pe/uneweb/wp-content/uploads/2025/05/IMG_0723-1200x600.jpg" alt="UNE ecoeficiente" class="content-image">
+                            </div>
+                            <h3 class="item-title">UNE es reconocida como institución pública ecoeficiente</h3>
+                            <p class="item-text">La Universidad Nacional de Educación Enrique Guzmán y Valle (UNE) ha sido reconocida como institución pública ecoeficiente. Recibió el Modelo EcoIP 2024 - Segunda Etapa, otorgado por el Ministerio del Ambiente (Minam), lo que la posiciona como una de las 18 instituciones públicas más ecoeficientes de Perú. Este reconocimiento forma parte de un programa nacional que busca promover el uso eficiente de recursos, el consumo responsable y la adecuada gestión de residuos en entidades estatales.</p>
+                            <div class="news-reference">
+                                <a href="https://www.une.edu.pe/uneweb/une-es-reconocida-como-institucion-publica-ecoeficiente/" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Leer noticia completa
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.une.edu.pe/uneweb/wp-content/uploads/2025/06/WhatsApp-Image-2025-06-24-at-9.14.27-AM-1200x600.jpeg" alt="Estudiantes en CADE" class="content-image">
+                            </div>
+                            <h3 class="item-title">Estudiantes cantuteños rumbo al CADE Universitario 2025</h3>
+                            <p class="item-text">Siete estudiantes destacados de la Universidad Nacional de Educación Enrique Guzmán y Valle (UNE) están participando en la 30ª edición de CADE Universitario, el foro más importante para jóvenes líderes en Perú. El evento, organizado por IPAE Acción Empresarial, se lleva a cabo del 25 al 27 de junio de 2025 en la Escuela Naval del Perú en Callao, bajo el lema "¡Ciudadanía Activa! ¡Democracia Viva!".</p>
+                            <div class="news-reference">
+                                <a href="https://www.une.edu.pe/uneweb/estudiantes-cantutenos-en-cade-universitario-2025/" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Leer noticia completa
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.infobae.com/resizer/v2/B6MYUXORB5C7JNVIK3XISB3HLM.png?auth=babdfca8358e519e6dda5af4e4ad14ce57eaca80a423ed75feeecc0b7b52040e&smart=true&width=992&height=558&quality=85" alt="Matanzas de La Cantuta" class="content-image">
+                            </div>
+                            <h3 class="item-title">Las matanzas de Barrios Altos y La Cantuta: la historia detrás de los crímenes por los que Alberto Fujimori fue condenado</h3>
+                            <p class="item-text">La masacre de Barrios Altos, ocurrida el 3 de noviembre de 1991, resultó en el asesinato de 15 personas, incluido un niño, por el Grupo Colina, quienes confundieron una reunión vecinal con un encuentro terrorista. El caso de La Cantuta, el 18 de julio de 1992, implicó el secuestro y desaparición de nueve estudiantes y un profesor de la Universidad La Cantuta, cuyos restos fueron encontrados posteriormente. Ambos actos fueron calificados como crímenes de lesa humanidad.</p>
+                            <div class="news-reference">
+                                <a href="https://www.infobae.com/peru/2024/09/11/las-matanzas-de-barrios-altos-y-la-cantuta-la-historia-detras-de-los-crimenes-por-los-que-fue-condenado-alberto-fujimori/" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Leer noticia completa
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="desafios">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Carreras</h2>
+                        <p class="section-subtitle">Oferta académica de la Universidad Nacional de Educación Enrique Guzmán y Valle</p>
+                    </div>
+                    
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://sedir.org.pe/cpanel/sum/img-uploads/formacion_agropecuaria1142917_22-02-22.jpg" alt="Facultad de Agropecuaria y Nutrición" class="content-image">
+                            </div>
+                            <h3 class="item-title">1. Facultad de Agropecuaria y Nutrición</h3>
+                            <p class="item-text"><strong>Escuela de Agropecuaria y Desarrollo Sostenible:</strong></p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Educación con Especialidad de Agropecuaria</li>
+                                <li>Educación con Especialidad de Desarrollo Ambiental</li>
+                            </ul>
+                            <p class="item-text"><strong>Escuela de Industria Alimentaria y Nutrición:</strong></p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Educación con Especialidad de Industria Alimentaria y Nutrición</li>
+                                <li>Nutrición Humana</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.emagister.com/i/wp-content/uploads/2022/05/grado-ciencias.jpg" alt="Facultad de Ciencias" class="content-image">
+                            </div>
+                            <h3 class="item-title">2. Facultad de Ciencias</h3>
+                            <p class="item-text"><strong>Escuela de Ciencias Naturales:</strong></p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Educación con Especialidad en Biología - Ciencias Naturales</li>
+                                <li>Educación con Especialidad en Química - Ciencias Naturales</li>
+                                <li>Educación con Especialidad en Biología - Informática</li>
+                                <li>Educación con Especialidad en Química, Física y Biología</li>
+                            </ul>
+                            <p class="item-text"><strong>Escuela de Matemática e Informática:</strong></p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Educación con Especialidad en Matemática</li>
+                                <li>Educación con Especialidad en Informática</li>
+                                <li>Educación con Especialidad en Física - Matemática</li>
+                                <li>Educación con Especialidad en Matemática e Informática</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://images.ctfassets.net/pdf29us7flmy/2E2nexIse124QUaa5E6Oul/f1b3d6de89fbe40eb7111521fa9e1edb/shutterstock_401240461_optimized.jpg?w=720&q=100&fm=jpg" alt="Facultad de Ciencias Empresariales" class="content-image">
+                            </div>
+                            <h3 class="item-title">3. Facultad de Ciencias Empresariales</h3>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Administración de Empresas</li>
+                                <li>Administración de Negocios Internacionales</li>
+                                <li>Turismo y Hotelería</li>
+                                <li>Gastronomía (Mencionada en algunas fuentes, verificar disponibilidad actual)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://images.ctfassets.net/pdf29us7flmy/4F8hRiPqwzmHg5XgKMGnmb/3d01d61dbf5becadda3a20c4017d8cd2/Office_Workspaces_person_teaching_a_group_of_people_-getty18-.jpg?w=720&q=100&fm=jpg" alt="Facultad de Ciencias Sociales y Humanidades" class="content-image">
+                            </div>
+                            <h3 class="item-title">4. Facultad de Ciencias Sociales y Humanidades</h3>
+                            <p class="item-text"><strong>Educación con Especialidad en:</strong></p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Ciencias Sociales - Historia</li>
+                                <li>Ciencias Sociales - Geografía</li>
+                                <li>Ciencias Sociales - Psicología</li>
+                                <li>Ciencias Sociales - Filosofía</li>
+                                <li>Educación Artística: Artes Plásticas</li>
+                                <li>Educación Artística: Música</li>
+                                <li>Educación Artística: Teatro</li>
+                                <li>Comunicación y Lenguas Nativas (Lengua Española - Literatura / Literatura - Lengua Española)</li>
+                                <li>Lenguas Extranjeras (Inglés - Alemán, Inglés - Español como Lengua Extranjera, Inglés - Francés, Inglés - Italiano, Lengua Española - Inglés)</li>
+                                <li>Educación Intercultural Bilingüe - Lengua Española</li>
+                                <li>Educación Intercultural Bilingüe - Literatura</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://usil-blog.s3.amazonaws.com/PROD/blog/image/por-que-estudiar-educacion-inicial.jpg" alt="Facultad de Educación Inicial" class="content-image">
+                            </div>
+                            <h3 class="item-title">5. Facultad de Educación Inicial</h3>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Educación Inicial - Niñez Temprana</li>
+                                <li>Educación Inicial - Retardo Mental (Educación Especial)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.unir.net/wp-content/uploads/2024/05/Que-hay-que-estudiar-para-ser-profesor-de-Educacion-Fisica2.jpg" alt="Facultad de Pedagogía y Cultura Física" class="content-image">
+                            </div>
+                            <h3 class="item-title">6. Facultad de Pedagogía y Cultura Física</h3>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Educación Primaria - Educación Básica Alternativa</li>
+                                <li>Educación Primaria</li>
+                                <li>Educación Básica Alternativa</li>
+                            </ul>
+                            <p class="item-text"><strong>Educación Física:</strong></p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Educación Física - Deportes</li>
+                                <li>Educación Física - Edades Tempranas</li>
+                                <li>Educación Física - Poblaciones Especiales</li>
+                                <li>Educación Física - Recreación y Deporte para Todos</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://isil.pe/blog/wp-content/uploads/2023/05/carrera-sistema-informacion-informacion.png" alt="Facultad de Tecnología (FATEC)" class="content-image">
+                            </div>
+                            <h3 class="item-title">7. Facultad de Tecnología (FATEC)</h3>
+                            <p class="item-text"><strong>Escuela Profesional de Diseño y Construcciones:</strong></p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Educación con Especialidad de Construcción Civil</li>
+                                <li>Educación con Especialidad de Diseño Industrial y Arquitectónico</li>
+                                <li>Educación con Especialidad de Ebanistería y Decoración</li>
+                            </ul>
+                            <p class="item-text"><strong>Escuela Profesional de Electromecánica:</strong></p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Educación con Especialidad de Automatización Industrial</li>
+                                <li>Educación con Especialidad de Electricidad</li>
+                                <li>Educación con Especialidad de Fuerza Motriz</li>
+                            </ul>
+                            <p class="item-text"><strong>Escuela Profesional de Electrónica y Telecomunicaciones:</strong></p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Educación con Especialidad de Electrónica e Informática</li>
+                                <li>Educación con Especialidad de Telecomunicaciones e Informática</li>
+                            </ul>
+                            <p class="item-text"><strong>Escuela Profesional de Metalmecánica:</strong></p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Educación con Especialidad de Construcciones Metálicas</li>
+                                <li>Educación con Especialidad de Mecánica de Producción</li>
+                                <li>Educación con Especialidad de Metalurgia - Joyería</li>
+                            </ul>
+                            <p class="item-text"><strong>Escuela Profesional de Tecnología de Vestido, Textiles y Artes Industriales:</strong></p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li>Educación con Especialidad de Artes Industriales</li>
+                                <li>Educación con Especialidad de Tecnología Textil</li>
+                                <li>Educación con Especialidad de Tecnología del Vestido</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="oportunidades">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Facultad de Tecnología (FATEC)</h2>
+                        <p class="section-subtitle">La Facultad de Tecnología de la Universidad Nacional de Educación Enrique Guzmán y Valle</p>
+                    </div>
+                    
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.une.edu.pe/tecnologia/wp-content/uploads/2019/07/index-1032x516.jpg" alt="FATEC" class="content-image">
+                            </div>
+                            <p class="item-text">La Facultad de Tecnología (FATEC) de la Universidad Nacional de Educación Enrique Guzmán y Valle (UNE), conocida como La Cantuta, es una de las facultades más dinámicas y diversas de la institución. Su misión es formar profesionales con un fuerte componente tecnológico y pedagógico, capaces de aplicar la ciencia y la tecnología en la educación y en diversos sectores productivos del país. FATEC no se limita a una sola rama, sino que engloba un amplio espectro de especialidades técnicas y de ingeniería.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="proposito">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Propósito</h2>
+                        <p class="section-subtitle">Misión y estructura de la Facultad de Tecnología (FATEC)</p>
+                    </div>
+                    
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.une.edu.pe/tecnologia/wp-content/uploads/2019/02/dise%C3%B1o_industrial-1024x512.jpg" alt="Estructura FATEC" class="content-image">
+                            </div>
+                            <h3 class="item-title">1. Estructura y Oferta Académica</h3>
+                            <p class="item-text">FATEC se organiza en diversas escuelas profesionales, cada una ofreciendo programas de estudio específicos que combinan la formación técnica con la pedagógica. Esto permite preparar tanto a futuros docentes en áreas tecnológicas como a profesionales directamente para la industria. Sus principales escuelas y las carreras que ofrecen son:</p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li><strong>Escuela Profesional de Diseño y Construcciones:</strong>
+                                    <ul style="padding-left: 1.5rem;">
+                                        <li>Educación con Especialidad de Construcción Civil</li>
+                                        <li>Educación con Especialidad de Diseño Industrial y Arquitectónico</li>
+                                        <li>Educación con Especialidad de Ebanistería y Decoración</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Escuela Profesional de Electromecánica:</strong>
+                                    <ul style="padding-left: 1.5rem;">
+                                        <li>Educación con Especialidad de Automatización Industrial</li>
+                                        <li>Educación con Especialidad de Electricidad</li>
+                                        <li>Educación con Especialidad de Fuerza Motriz</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Escuela Profesional de Electrónica y Telecomunicaciones:</strong>
+                                    <ul style="padding-left: 1.5rem;">
+                                        <li>Educación con Especialidad de Electrónica e Informática</li>
+                                        <li>Educación con Especialidad de Telecomunicaciones e Informática (que aborda el diseño, implementación y gestión de redes y sistemas de comunicación).</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Escuela Profesional de Metalmecánica:</strong>
+                                    <ul style="padding-left: 1.5rem;">
+                                        <li>Educación con Especialidad de Construcciones Metálicas</li>
+                                        <li>Educación con Especialidad de Mecánica de Producción</li>
+                                        <li>Educación con Especialidad de Metalurgia - Joyería</li>
+                                    </ul>
+                                </li>
+                                <li><strong>Escuela Profesional de Tecnología de Vestido, Textiles y Artes Industriales:</strong>
+                                    <ul style="padding-left: 1.5rem;">
+                                        <li>Educación con Especialidad de Artes Industriales</li>
+                                        <li>Educación con Especialidad de Tecnología Textil</li>
+                                        <li>Educación con Especialidad de Tecnología del Vestido</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <p class="item-text">Esta amplia gama de especialidades convierte a FATEC en un pilar fundamental para el desarrollo tecnológico y educativo del país.</p>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://kandiolatam.com/public/media/hMSsTnIqwLPoJpI7DSf0CfnAV1KlCq5XfTKOcnZl.jpeg" alt="Perfil del egresado" class="content-image">
+                            </div>
+                            <h3 class="item-title">2. Perfil del Egresado y Campo Laboral</h3>
+                            <p class="item-text">Los egresados de FATEC están formados para ser profesionales y/o docentes altamente capacitados en sus respectivas áreas tecnológicas. El enfoque dual, que combina conocimientos técnicos con habilidades pedagógicas en muchas de sus especialidades, permite que los graduados no solo apliquen sus conocimientos técnicos, sino que también los transmitan eficazmente, contribuyendo a la formación de nuevas generaciones o a la innovación en la industria.</p>
+                            <p class="item-text">El perfil general de un egresado de FATEC incluye un dominio técnico profundo en su especialidad, la capacidad de innovar y proponer soluciones a desafíos tecnológicos, y, en el caso de los futuros docentes, una sólida competencia pedagógica para enseñar y diseñar experiencias de aprendizaje efectivas en tecnología. También desarrollan habilidades en gestión de proyectos y un fuerte compromiso ético y responsable con el uso de la tecnología.</p>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://centrodeinnovacion.uc.cl/assets/uploads/2021/06/47954064503_ea0855dc2f_k-1.jpg" alt="Innovación FATEC" class="content-image">
+                            </div>
+                            <h3 class="item-title">3. Fomento de la Innovación y Conexión con el Entorno</h3>
+                            <p class="item-text">FATEC, como facultad tecnológica, impulsa activamente la innovación y el desarrollo de proyectos prácticos. Los estudiantes de todas sus carreras tienen la oportunidad de aplicar sus conocimientos en laboratorios y talleres equipados, lo que les permite experimentar y crear soluciones reales.</p>
+                            <p class="item-text">Además, la facultad se beneficia de los esfuerzos de internacionalización de la UNE. Convenios con universidades extranjeras, como el recientemente firmado con la Universidad Autónoma de Tlaxcala en México para cooperación académica, o la participación de sus estudiantes en foros de liderazgo como CADE Universitario, son ejemplos de cómo la UNE amplía las perspectivas de sus estudiantes y docentes. Estos lazos fomentan el intercambio de conocimientos, la colaboración en proyectos de mayor envergadura y la actualización constante de los programas de estudio, lo cual es fundamental en un mundo globalizado y tecnológicamente interconectado. La activa presencia en redes sociales de la universidad y de la facultad misma sirve también como un canal vital para difundir estos eventos y conectar a la comunidad con oportunidades de desarrollo profesional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="campo">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Campo Laboral</h2>
+                        <p class="section-subtitle">Oportunidades profesionales para los egresados de la Facultad de Tecnología (FATEC)</p>
+                    </div>
+                    
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://cdn2.hubspot.net/hubfs/1556449/imagenes-blog/estrategia-de-marketing-para-el-sector-educativo.jpg" alt="Sector Educativo" class="content-image">
+                            </div>
+                            <h3 class="item-title">1. Sector Educativo</h3>
+                            <p class="item-text">Los profesionales con formación pedagógica de FATEC son esenciales para el sistema educativo peruano. Se desempeñan como docentes de educación técnica y tecnológica en diversas instituciones. Esto incluye colegios de educación básica regular (especialmente en áreas técnicas), institutos de educación superior tecnológica (IEST) y centros de educación técnico-productiva (CETPRO). Su rol es fundamental para formar a las nuevas generaciones en habilidades técnicas demandadas por el mercado laboral.</p>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.finning.com/content/dam/finning/es/Images/Interiores/Secciones/Industrias/infraestructura_apoyo.jpg" alt="Sector Industrial" class="content-image">
+                            </div>
+                            <h3 class="item-title">2. Sector Industrial y Empresarial</h3>
+                            <p class="item-text">Los egresados de FATEC con enfoque más técnico tienen un amplio abanico de oportunidades en diversas industrias, directamente relacionados con sus especialidades:</p>
+                            <ul style="color: var(--text-light); margin-bottom: 1rem; padding-left: 1.5rem;">
+                                <li><strong>Ingeniería y Operaciones:</strong> Trabajan en empresas de construcción civil, diseño industrial y arquitectónico, y en el sector de la manufactura (mecánica de producción, construcciones metálicas, ebanistería). Aquí pueden participar en el diseño, planificación, ejecución, control de calidad y mantenimiento de procesos y productos.</li>
+                                <li><strong>Tecnología y Comunicaciones:</strong> Para los especialistas en electrónica y telecomunicaciones, el campo laboral abarca operadoras de telecomunicaciones, empresas proveedoras de servicios de internet y redes, desarrollo de hardware y software para comunicaciones, y roles en automatización industrial y electricidad.</li>
+                                <li><strong>Industrias Especializadas:</strong> En áreas como tecnología textil y del vestido, o metalurgia y joyería, los egresados encuentran oportunidades en el diseño de moda, producción textil, gestión de calidad en fábricas de confección, o en talleres y empresas de joyería y metalmecánica.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.tipsempresariales.com/uploads/1/3/1/4/131438314/published/consultor-empresarial.jpeg?1693613416" alt="Emprendimiento" class="content-image">
+                            </div>
+                            <h3 class="item-title">3. Emprendimiento y Consultoría</h3>
+                            <p class="item-text">Un número significativo de egresados de FATEC opta por el camino del emprendimiento, creando sus propias empresas o talleres especializados en su área de conocimiento. También pueden ofrecer servicios de consultoría técnica a otras empresas, aplicando su experiencia para resolver problemas específicos o mejorar procesos. Esta vía les permite ser generadores de empleo y contribuir directamente al desarrollo económico local y nacional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="conexion">
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Conexión con el Entorno</h2>
+                        <p class="section-subtitle">Relaciones y colaboraciones de la Facultad de Tecnología (FATEC) con el mundo exterior</p>
+                    </div>
+                    
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://www.esan.edu.pe/images/blog/2018/07/23/1500x844-abuso-convenios-internacionales.jpg" alt="Acuerdos internacionales" class="content-image">
+                            </div>
+                            <h3 class="item-title">1. Acuerdos y Convenios Internacionales</h3>
+                            <p class="item-text">La UNE, y por extensión FATEC, fortalece sus lazos académicos a través de la firma de acuerdos y convenios con universidades e instituciones extranjeras. Estos memorandos de entendimiento facilitan la cooperación académica, científica y cultural. Un ejemplo reciente es el acuerdo con la Universidad Autónoma de Tlaxcala en México, que busca promover el intercambio de estudiantes, docentes e investigadores, el desarrollo de programas académicos conjuntos y la realización de proyectos de investigación colaborativos. Estas alianzas son cruciales para el crecimiento y la actualización constante de los programas de estudio de FATEC.</p>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://asem.mx/wp-content/uploads/2023/08/Liderazgo-para-emprendedores.png" alt="Eventos de liderazgo" class="content-image">
+                            </div>
+                            <h3 class="item-title">2. Participación en Eventos de Liderazgo y Emprendimiento</h3>
+                            <p class="item-text">Los estudiantes de FATEC son alentados a participar en foros y eventos externos de alto nivel, tanto nacionales como internacionales. Su presencia en iniciativas como CADE Universitario, el principal foro de jóvenes líderes en Perú, les brinda la oportunidad de reflexionar sobre temas relevantes para el país, desarrollar habilidades de liderazgo y establecer contacto con figuras destacadas del sector público y privado. Estas experiencias enriquecen su formación, amplían su visión profesional y fomentan el espíritu emprendedor, permitiéndoles aplicar sus conocimientos tecnológicos en la resolución de problemas reales.</p>
+                        </div>
+                        
+                        <div class="content-item">
+                            <div class="content-image-container">
+                                <img src="https://togrowagencia.com/wp-content/uploads/2021/06/plataformas-digitales-e1624489294916-1.jpg" alt="Plataformas digitales" class="content-image">
+                            </div>
+                            <h3 class="item-title">3. Visibilidad y Difusión en Plataformas Digitales</h3>
+                            <p class="item-text">La UNE y la propia FATEC utilizan activamente las plataformas digitales y redes sociales para mantener una conexión dinámica con su entorno externo. A través de sus sitios web y perfiles en redes como Facebook, LinkedIn e Instagram, difunden sus logros académicos, proyectos de investigación, eventos relevantes (webinars, seminarios, congresos), y oportunidades para la comunidad. Esta estrategia de comunicación digital no solo promueve la imagen de la facultad, sino que también facilita el acceso a información valiosa para estudiantes, egresados, empresas y público en general, fortaleciendo la vinculación de FATEC con el mundo profesional y académico a nivel nacional e internacional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="team-members">
+                <div class="team-member">
+                    <i class="fas fa-user"></i> Celeste Ludeña Soras
+                </div>
+                <div class="team-member">
+                    <i class="fas fa-user"></i> Francisco Rafael Cerrón Fernández
+                </div>
+                <div class="team-member">
+                    <i class="fas fa-user"></i> Mauricio Pajares Toledo
+                </div>
+                <div class="team-member">
+                    <i class="fas fa-user"></i> Yeros Egoavil
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+         // Esperar a que se cargue el DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener todos los tabs y contenidos
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // Función para cambiar de pestaña
+            function changeTab(tabId) {
+                // Remover clase active de todos los tabs y contenidos
+                tabs.forEach(tab => tab.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Agregar clase active al tab y contenido seleccionado
+                document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+                
+                // Desplazarse suavemente al inicio del contenido
+                document.getElementById(tabId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            // Agregar evento click a cada tab
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    changeTab(tabId);
+                });
+            });
+            
+            // Asegurar que la pestaña activa se muestre correctamente al recargar
+            const activeTab = document.querySelector('.tab.active');
+            if (activeTab) {
+                const tabId = activeTab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
